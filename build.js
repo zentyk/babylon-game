@@ -1,17 +1,11 @@
 const fs = require('fs');
-const pug = require('pug');
+const handlebars = require('handlebars');
 const sass = require('sass');
 const esbuild = require('esbuild');
+const {watch} = require('chokidar');
 
-esbuild.build({
-    entryPoints: ['./src/app.ts'],
-    bundle: true,
-    sourcemap : true,
-    target : 'es2015',
-    //minify : true,
-    outfile: './dist/app.js',
-    tsconfig: './tsconfig.json'
-}).catch(() => process.exit(1));
+let compiled = handlebars.compile(fs.readFileSync('./src/index.hbs', 'utf8'));
+fs.writeFileSync('./dist/index.html', compiled({}));
 
 sass.compileAsync("./src/app.scss",{
     sourceMap: true,
@@ -21,12 +15,17 @@ sass.compileAsync("./src/app.scss",{
 }).catch(err => {
     console.log(err);
     process.exit(1);
-})
+});
 
-pug.renderFile('./src/index.pug', {}, (err, html) => {
-    if (err) {
-        console.error(err);
-        process.exit(1);
-    }
-    fs.writeFileSync('./dist/index.html', html);
+watch('./src/**/*.ts', {}).on('change', (path) => {
+    console.log(`building... ${path}`);
+    esbuild.build({
+        entryPoints: ['./src/app.ts'],
+        bundle: true,
+        sourcemap : true,
+        target : 'es2015',
+        minify : true,
+        outfile: './dist/app.js',
+        tsconfig: './tsconfig.json'
+    }).catch(() => process.exit(1));
 });
