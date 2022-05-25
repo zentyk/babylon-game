@@ -1,0 +1,26 @@
+{
+  "name": "babylon-game",
+  "version": "1.0.0",
+  "description": "Babylon TestGame",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zentyk/babylon-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zentyk/babylon-game/issues"
+  },
+  "homepage": "https://github.com/zentyk/babylon-game#readme",
+  "devDependencies": {
+    "@babylonjs/core": "^5.7.0",
+    "esbuild": "^0.14.39",
+    "pug": "^3.0.2",
+    "sass": "^1.52.1"
+  }
+}
